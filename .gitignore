@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+*.db
+*.sqlite
+*.sqlite3
+
+# Node
+node_modules/
+dist/
+.vite/
+*.local
+
+# Env / editor
+.env
+.env.*
+!.env.example
+.DS_Store
+.idea/
+.vscode/
+
+# Build artifacts (generated TS types ARE committed so the app runs without a build step)

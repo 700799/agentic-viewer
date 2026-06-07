@@ -1,0 +1,539 @@
+{
+  "schema_version": "1.0",
+  "source": "claude_code",
+  "session": {
+    "external_id": "demo-refactor-auth",
+    "title": "Refactor the auth module to use JWT and add tests.",
+    "started_at": "2026-06-07T10:00:00Z",
+    "ended_at": "2026-06-07T10:00:50.100000Z",
+    "status": "completed",
+    "meta": {
+      "model": "claude-opus-4-8"
+    }
+  },
+  "agents": [
+    {
+      "external_id": "agent:main",
+      "name": "main",
+      "role": "orchestrator",
+      "model": null,
+      "meta": {}
+    },
+    {
+      "external_id": "agent:test-writer:7",
+      "name": "test-writer",
+      "role": "subagent",
+      "model": null,
+      "meta": {}
+    }
+  ],
+  "mcp_servers": [
+    {
+      "external_id": "mcp:library-docs",
+      "name": "library-docs",
+      "transport": "stdio",
+      "url": null,
+      "tools": [],
+      "meta": {}
+    }
+  ],
+  "spans": [
+    {
+      "external_span_id": "span:root",
+      "parent_external_span_id": null,
+      "kind": "session_root",
+      "name": "main",
+      "agent_external_id": "agent:main",
+      "mcp_server_external_id": null,
+      "status": "ok",
+      "start_time": null,
+      "end_time": null,
+      "attributes": {},
+      "io": [],
+      "cost": null,
+      "error": null
+    },
+    {
+      "external_span_id": "span:llm:1",
+      "parent_external_span_id": "span:root",
+      "kind": "llm",
+      "name": "claude-opus-4-8",
+      "agent_external_id": "agent:main",
+      "mcp_server_external_id": null,
+      "status": "ok",
+      "start_time": "2026-06-07T10:00:03.500000Z",
+      "end_time": "2026-06-07T10:00:03.500000Z",
+      "attributes": {
+        "gen_ai.system": "anthropic",
+        "model": "claude-opus-4-8"
+      },
+      "io": [
+        {
+          "io_type": "prompt",
+          "role": "user",
+          "content_text": "Refactor the auth module to use JWT and add tests.",
+          "file_path": null,
+          "byte_size": null,
+          "meta": {}
+        },
+        {
+          "io_type": "response",
+          "role": "assistant",
+          "content_text": "I'll start by reading the current auth implementation.",
+          "file_path": null,
+          "byte_size": null,
+          "meta": {}
+        }
+      ],
+      "cost": {
+        "model": "claude-opus-4-8",
+        "input_tokens": 1850,
+        "output_tokens": 420,
+        "cache_read_tokens": 1200,
+        "cache_write_tokens": 0,
+        "cost_usd": null
+      },
+      "error": null
+    },
+    {
+      "external_span_id": "span:tool:2",
+      "parent_external_span_id": "span:llm:1",
+      "kind": "tool",
+      "name": "Read",
+      "agent_external_id": "agent:main",
+      "mcp_server_external_id": null,
+      "status": "ok",
+      "start_time": "2026-06-07T10:00:03.500000Z",
+      "end_time": "2026-06-07T10:00:04.100000Z",
+      "attributes": {
+        "tool": "Read"
+      },
+      "io": [
+        {
+          "io_type": "tool_input",
+          "role": null,
+          "content_text": "{\"file_path\": \"src/auth.ts\"}",
+          "file_path": null,
+          "byte_size": null,
+          "meta": {}
+        },
+        {
+          "io_type": "file_read",
+          "role": null,
+          "content_text": null,
+          "file_path": "src/auth.ts",
+          "byte_size": null,
+          "meta": {}
+        },
+        {
+          "io_type": "tool_output",
+          "role": null,
+          "content_text": "export function login(user, pass) { /* session cookie based */ }",
+          "file_path": null,
+          "byte_size": null,
+          "meta": {}
+        }
+      ],
+      "cost": null,
+      "error": null
+    },
+    {
+      "external_span_id": "span:llm:3",
+      "parent_external_span_id": "span:root",
+      "kind": "llm",
+      "name": "claude-opus-4-8",
+      "agent_external_id": "agent:main",
+      "mcp_server_external_id": null,
+      "status": "ok",
+      "start_time": "2026-06-07T10:00:09.800000Z",
+      "end_time": "2026-06-07T10:00:09.800000Z",
+      "attributes": {
+        "gen_ai.system": "anthropic",
+        "model": "claude-opus-4-8"
+      },
+      "io": [
+        {
+          "io_type": "response",
+          "role": "assistant",
+          "content_text": "Now I'll look up the JWT library docs via the MCP server, then rewrite the module.",
+          "file_path": null,
+          "byte_size": null,
+          "meta": {}
+        }
+      ],
+      "cost": {
+        "model": "claude-opus-4-8",
+        "input_tokens": 2400,
+        "output_tokens": 680,
+        "cache_read_tokens": 1850,
+        "cache_write_tokens": 300,
+        "cost_usd": null
+      },
+      "error": null
+    },
+    {
+      "external_span_id": "span:tool:4",
+      "parent_external_span_id": "span:llm:3",
+      "kind": "mcp_tool",
+      "name": "mcp__library-docs__lookup",
+      "agent_external_id": "agent:main",
+      "mcp_server_external_id": "mcp:library-docs",
+      "status": "ok",
+      "start_time": "2026-06-07T10:00:09.800000Z",
+      "end_time": "2026-06-07T10:00:10.600000Z",
+      "attributes": {
+        "tool": "mcp__library-docs__lookup"
+      },
+      "io": [
+        {
+          "io_type": "tool_input",
+          "role": null,
+          "content_text": "{\"package\": \"jsonwebtoken\", \"symbol\": \"sign\"}",
+          "file_path": null,
+          "byte_size": null,
+          "meta": {}
+        },
+        {
+          "io_type": "tool_output",
+          "role": null,
+          "content_text": "jwt.sign(payload, secret, { expiresIn }) returns a signed token string.",
+          "file_path": null,
+          "byte_size": null,
+          "meta": {}
+        }
+      ],
+      "cost": null,
+      "error": null
+    },
+    {
+      "external_span_id": "span:llm:5",
+      "parent_external_span_id": "span:root",
+      "kind": "llm",
+      "name": "claude-opus-4-8",
+      "agent_external_id": "agent:main",
+      "mcp_server_external_id": null,
+      "status": "ok",
+      "start_time": "2026-06-07T10:00:15.200000Z",
+      "end_time": "2026-06-07T10:00:15.200000Z",
+      "attributes": {
+        "gen_ai.system": "anthropic",
+        "model": "claude-opus-4-8"
+      },
+      "io": [
+        {
+          "io_type": "response",
+          "role": "assistant",
+          "content_text": "Writing the new JWT-based auth module.",
+          "file_path": null,
+          "byte_size": null,
+          "meta": {}
+        }
+      ],
+      "cost": {
+        "model": "claude-opus-4-8",
+        "input_tokens": 3100,
+        "output_tokens": 1240,
+        "cache_read_tokens": 2400,
+        "cache_write_tokens": 0,
+        "cost_usd": null
+      },
+      "error": null
+    },
+    {
+      "external_span_id": "span:tool:6",
+      "parent_external_span_id": "span:llm:5",
+      "kind": "tool",
+      "name": "Write",
+      "agent_external_id": "agent:main",
+      "mcp_server_external_id": null,
+      "status": "ok",
+      "start_time": "2026-06-07T10:00:15.200000Z",
+      "end_time": "2026-06-07T10:00:15.900000Z",
+      "attributes": {
+        "tool": "Write"
+      },
+      "io": [
+        {
+          "io_type": "tool_input",
+          "role": null,
+          "content_text": "{\"file_path\": \"src/auth.ts\", \"content\": \"import jwt from 'jsonwebtoken'; export function login(user, pass){ return jwt.sign({sub:user}, process.env.SECRET, {expiresIn:'1h'}); }\"}",
+          "file_path": null,
+          "byte_size": null,
+          "meta": {}
+        },
+        {
+          "io_type": "file_write",
+          "role": null,
+          "content_text": null,
+          "file_path": "src/auth.ts",
+          "byte_size": null,
+          "meta": {}
+        },
+        {
+          "io_type": "tool_output",
+          "role": null,
+          "content_text": "File written: src/auth.ts (142 bytes)",
+          "file_path": null,
+          "byte_size": null,
+          "meta": {}
+        }
+      ],
+      "cost": null,
+      "error": null
+    },
+    {
+      "external_span_id": "span:llm:7",
+      "parent_external_span_id": "span:root",
+      "kind": "llm",
+      "name": "claude-opus-4-8",
+      "agent_external_id": "agent:main",
+      "mcp_server_external_id": null,
+      "status": "ok",
+      "start_time": "2026-06-07T10:00:21Z",
+      "end_time": "2026-06-07T10:00:21Z",
+      "attributes": {
+        "gen_ai.system": "anthropic",
+        "model": "claude-opus-4-8"
+      },
+      "io": [
+        {
+          "io_type": "response",
+          "role": "assistant",
+          "content_text": "I'll delegate test-writing to a dedicated subagent.",
+          "file_path": null,
+          "byte_size": null,
+          "meta": {}
+        }
+      ],
+      "cost": {
+        "model": "claude-opus-4-8",
+        "input_tokens": 3600,
+        "output_tokens": 540,
+        "cache_read_tokens": 3100,
+        "cache_write_tokens": 0,
+        "cost_usd": null
+      },
+      "error": null
+    },
+    {
+      "external_span_id": "span:agent:8",
+      "parent_external_span_id": "span:llm:7",
+      "kind": "agent",
+      "name": "test-writer",
+      "agent_external_id": "agent:test-writer:7",
+      "mcp_server_external_id": null,
+      "status": "ok",
+      "start_time": "2026-06-07T10:00:21Z",
+      "end_time": "2026-06-07T10:00:38.400000Z",
+      "attributes": {},
+      "io": [
+        {
+          "io_type": "prompt",
+          "role": null,
+          "content_text": "{\"subagent_type\": \"test-writer\", \"description\": \"Write unit tests for the new JWT auth module\", \"prompt\": \"Write vitest tests covering login() token generation and expiry.\"}",
+          "file_path": null,
+          "byte_size": null,
+          "meta": {}
+        },
+        {
+          "io_type": "tool_output",
+          "role": null,
+          "content_text": "Created src/auth.test.ts with 4 passing tests.",
+          "file_path": null,
+          "byte_size": null,
+          "meta": {}
+        }
+      ],
+      "cost": null,
+      "error": null
+    },
+    {
+      "external_span_id": "span:llm:9",
+      "parent_external_span_id": "span:root",
+      "kind": "llm",
+      "name": "claude-opus-4-8",
+      "agent_external_id": "agent:main",
+      "mcp_server_external_id": null,
+      "status": "ok",
+      "start_time": "2026-06-07T10:00:42.700000Z",
+      "end_time": "2026-06-07T10:00:42.700000Z",
+      "attributes": {
+        "gen_ai.system": "anthropic",
+        "model": "claude-opus-4-8"
+      },
+      "io": [
+        {
+          "io_type": "response",
+          "role": "assistant",
+          "content_text": "Running the test suite to verify.",
+          "file_path": null,
+          "byte_size": null,
+          "meta": {}
+        }
+      ],
+      "cost": {
+        "model": "claude-opus-4-8",
+        "input_tokens": 4200,
+        "output_tokens": 900,
+        "cache_read_tokens": 3600,
+        "cache_write_tokens": 0,
+        "cost_usd": null
+      },
+      "error": null
+    },
+    {
+      "external_span_id": "span:tool:10",
+      "parent_external_span_id": "span:llm:9",
+      "kind": "tool",
+      "name": "Bash",
+      "agent_external_id": "agent:main",
+      "mcp_server_external_id": null,
+      "status": "ok",
+      "start_time": "2026-06-07T10:00:42.700000Z",
+      "end_time": "2026-06-07T10:00:46.300000Z",
+      "attributes": {
+        "tool": "Bash"
+      },
+      "io": [
+        {
+          "io_type": "tool_input",
+          "role": null,
+          "content_text": "{\"command\": \"npx vitest run src/auth.test.ts\"}",
+          "file_path": null,
+          "byte_size": null,
+          "meta": {}
+        },
+        {
+          "io_type": "tool_output",
+          "role": null,
+          "content_text": "Test Files 1 passed (1)\nTests 4 passed (4)",
+          "file_path": null,
+          "byte_size": null,
+          "meta": {}
+        }
+      ],
+      "cost": null,
+      "error": null
+    },
+    {
+      "external_span_id": "span:llm:11",
+      "parent_external_span_id": "span:root",
+      "kind": "llm",
+      "name": "claude-opus-4-8",
+      "agent_external_id": "agent:main",
+      "mcp_server_external_id": null,
+      "status": "ok",
+      "start_time": "2026-06-07T10:00:50.100000Z",
+      "end_time": "2026-06-07T10:00:50.100000Z",
+      "attributes": {
+        "gen_ai.system": "anthropic",
+        "model": "claude-opus-4-8"
+      },
+      "io": [
+        {
+          "io_type": "response",
+          "role": "assistant",
+          "content_text": "Done. The auth module now uses JWT and all 4 tests pass.",
+          "file_path": null,
+          "byte_size": null,
+          "meta": {}
+        }
+      ],
+      "cost": {
+        "model": "claude-opus-4-8",
+        "input_tokens": 4500,
+        "output_tokens": 260,
+        "cache_read_tokens": 4200,
+        "cache_write_tokens": 0,
+        "cost_usd": null
+      },
+      "error": null
+    }
+  ],
+  "edges": [
+    {
+      "source_external_span_id": "span:root",
+      "target_external_span_id": "span:llm:1",
+      "kind": "call",
+      "label": null,
+      "meta": {}
+    },
+    {
+      "source_external_span_id": "span:llm:1",
+      "target_external_span_id": "span:tool:2",
+      "kind": "call",
+      "label": null,
+      "meta": {}
+    },
+    {
+      "source_external_span_id": "span:root",
+      "target_external_span_id": "span:llm:3",
+      "kind": "call",
+      "label": null,
+      "meta": {}
+    },
+    {
+      "source_external_span_id": "span:llm:3",
+      "target_external_span_id": "span:tool:4",
+      "kind": "call",
+      "label": null,
+      "meta": {}
+    },
+    {
+      "source_external_span_id": "span:tool:4",
+      "target_external_span_id": "span:tool:4",
+      "kind": "mcp_link",
+      "label": "library-docs",
+      "meta": {}
+    },
+    {
+      "source_external_span_id": "span:root",
+      "target_external_span_id": "span:llm:5",
+      "kind": "call",
+      "label": null,
+      "meta": {}
+    },
+    {
+      "source_external_span_id": "span:llm:5",
+      "target_external_span_id": "span:tool:6",
+      "kind": "call",
+      "label": null,
+      "meta": {}
+    },
+    {
+      "source_external_span_id": "span:root",
+      "target_external_span_id": "span:llm:7",
+      "kind": "call",
+      "label": null,
+      "meta": {}
+    },
+    {
+      "source_external_span_id": "span:llm:7",
+      "target_external_span_id": "span:agent:8",
+      "kind": "handoff",
+      "label": null,
+      "meta": {}
+    },
+    {
+      "source_external_span_id": "span:root",
+      "target_external_span_id": "span:llm:9",
+      "kind": "call",
+      "label": null,
+      "meta": {}
+    },
+    {
+      "source_external_span_id": "span:llm:9",
+      "target_external_span_id": "span:tool:10",
+      "kind": "call",
+      "label": null,
+      "meta": {}
+    },
+    {
+      "source_external_span_id": "span:root",
+      "target_external_span_id": "span:llm:11",
+      "kind": "call",
+      "label": null,
+      "meta": {}
+    }
+  ]
+}

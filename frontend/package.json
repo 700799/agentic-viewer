@@ -1,0 +1,32 @@
+{
+  "name": "@agentcanvas/frontend",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "gen-types": "json2ts -i src/types/canonical.schema.json -o src/types/canonical.ts --no-additionalProperties"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.59.0",
+    "dagre": "^0.8.5",
+    "mermaid": "^11.4.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.27.0",
+    "reactflow": "^11.11.4",
+    "zustand": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/dagre": "^0.7.52",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.3",
+    "json-schema-to-typescript": "^15.0.3",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10"
+  }
+}
