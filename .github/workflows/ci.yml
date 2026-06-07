@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - name: Set up Python
+        run: uv python install 3.11
+      - name: Install dependencies
+        run: uv sync --extra dev
+      - name: Lint (ruff)
+        run: uv run ruff check app tests
+      - name: Apply migrations (SQLite)
+        run: uv run alembic upgrade head
+      - name: Tests (pytest)
+        run: uv run pytest -q
+      - name: Canonical schema export is up to date
+        run: |
+          uv run python -m app.export.jsonschema > /tmp/schema.json
+          diff <(python -c "import json,sys; json.dump(json.load(open('/tmp/schema.json')), sys.stdout, indent=2, sort_keys=True)") \
+               <(python -c "import json,sys; json.dump(json.load(open('../frontend/src/types/canonical.schema.json')), sys.stdout, indent=2, sort_keys=True)") \
+            || (echo "::error::canonical.schema.json is stale — run 'make gen-types'" && exit 1)
+
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4 # version comes from package.json "packageManager"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+      - name: Install dependencies (workspace)
+        run: pnpm install --frozen-lockfile
+      - name: Type-check and build
+        run: pnpm --filter @agentcanvas/frontend build

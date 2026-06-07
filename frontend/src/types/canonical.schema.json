@@ -1,0 +1,593 @@
+{
+  "$defs": {
+    "AgentInfo": {
+      "properties": {
+        "external_id": {
+          "title": "External Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "role": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Role"
+        },
+        "model": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model"
+        },
+        "meta": {
+          "additionalProperties": true,
+          "title": "Meta",
+          "type": "object"
+        }
+      },
+      "required": [
+        "external_id",
+        "name"
+      ],
+      "title": "AgentInfo",
+      "type": "object"
+    },
+    "CostRecord": {
+      "properties": {
+        "model": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model"
+        },
+        "input_tokens": {
+          "default": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "default": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "cache_read_tokens": {
+          "default": 0,
+          "title": "Cache Read Tokens",
+          "type": "integer"
+        },
+        "cache_write_tokens": {
+          "default": 0,
+          "title": "Cache Write Tokens",
+          "type": "integer"
+        },
+        "cost_usd": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cost Usd"
+        }
+      },
+      "title": "CostRecord",
+      "type": "object"
+    },
+    "EdgeInput": {
+      "properties": {
+        "source_external_span_id": {
+          "title": "Source External Span Id",
+          "type": "string"
+        },
+        "target_external_span_id": {
+          "title": "Target External Span Id",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/EdgeKind",
+          "default": "call"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label"
+        },
+        "meta": {
+          "additionalProperties": true,
+          "title": "Meta",
+          "type": "object"
+        }
+      },
+      "required": [
+        "source_external_span_id",
+        "target_external_span_id"
+      ],
+      "title": "EdgeInput",
+      "type": "object"
+    },
+    "EdgeKind": {
+      "enum": [
+        "call",
+        "handoff",
+        "data_flow",
+        "mcp_link",
+        "file_dep",
+        "memory_dep"
+      ],
+      "title": "EdgeKind",
+      "type": "string"
+    },
+    "ErrorInfo": {
+      "properties": {
+        "error_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error Type"
+        },
+        "message": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Message"
+        },
+        "stack": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Stack"
+        },
+        "meta": {
+          "additionalProperties": true,
+          "title": "Meta",
+          "type": "object"
+        }
+      },
+      "title": "ErrorInfo",
+      "type": "object"
+    },
+    "IORecord": {
+      "properties": {
+        "io_type": {
+          "$ref": "#/$defs/IOType"
+        },
+        "role": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Role"
+        },
+        "content_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Content Text"
+        },
+        "file_path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "File Path"
+        },
+        "byte_size": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Byte Size"
+        },
+        "meta": {
+          "additionalProperties": true,
+          "title": "Meta",
+          "type": "object"
+        }
+      },
+      "required": [
+        "io_type"
+      ],
+      "title": "IORecord",
+      "type": "object"
+    },
+    "IOType": {
+      "enum": [
+        "prompt",
+        "response",
+        "tool_input",
+        "tool_output",
+        "file_read",
+        "file_write",
+        "memory_read",
+        "memory_write"
+      ],
+      "title": "IOType",
+      "type": "string"
+    },
+    "McpServerInfo": {
+      "properties": {
+        "external_id": {
+          "title": "External Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "transport": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Transport"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url"
+        },
+        "tools": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Tools",
+          "type": "array"
+        },
+        "meta": {
+          "additionalProperties": true,
+          "title": "Meta",
+          "type": "object"
+        }
+      },
+      "required": [
+        "external_id",
+        "name"
+      ],
+      "title": "McpServerInfo",
+      "type": "object"
+    },
+    "SessionInfo": {
+      "properties": {
+        "external_id": {
+          "title": "External Id",
+          "type": "string"
+        },
+        "title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Title"
+        },
+        "started_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Started At"
+        },
+        "ended_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ended At"
+        },
+        "status": {
+          "default": "completed",
+          "title": "Status",
+          "type": "string"
+        },
+        "meta": {
+          "additionalProperties": true,
+          "title": "Meta",
+          "type": "object"
+        }
+      },
+      "required": [
+        "external_id"
+      ],
+      "title": "SessionInfo",
+      "type": "object"
+    },
+    "Source": {
+      "enum": [
+        "claude_code",
+        "openai_agents",
+        "langgraph",
+        "crewai",
+        "autogen",
+        "custom"
+      ],
+      "title": "Source",
+      "type": "string"
+    },
+    "SpanInput": {
+      "properties": {
+        "external_span_id": {
+          "title": "External Span Id",
+          "type": "string"
+        },
+        "parent_external_span_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parent External Span Id"
+        },
+        "kind": {
+          "$ref": "#/$defs/SpanKind"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "agent_external_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Agent External Id"
+        },
+        "mcp_server_external_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mcp Server External Id"
+        },
+        "status": {
+          "default": "ok",
+          "title": "Status",
+          "type": "string"
+        },
+        "start_time": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Start Time"
+        },
+        "end_time": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "End Time"
+        },
+        "attributes": {
+          "additionalProperties": true,
+          "title": "Attributes",
+          "type": "object"
+        },
+        "io": {
+          "items": {
+            "$ref": "#/$defs/IORecord"
+          },
+          "title": "Io",
+          "type": "array"
+        },
+        "cost": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CostRecord"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ErrorInfo"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "external_span_id",
+        "kind",
+        "name"
+      ],
+      "title": "SpanInput",
+      "type": "object"
+    },
+    "SpanKind": {
+      "enum": [
+        "session_root",
+        "agent",
+        "llm",
+        "tool",
+        "mcp_tool",
+        "file_io",
+        "memory",
+        "handoff",
+        "chain",
+        "retrieval",
+        "custom"
+      ],
+      "title": "SpanKind",
+      "type": "string"
+    }
+  },
+  "description": "A complete (or appended) trace, normalized across frameworks.",
+  "properties": {
+    "schema_version": {
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source": {
+      "$ref": "#/$defs/Source"
+    },
+    "session": {
+      "$ref": "#/$defs/SessionInfo"
+    },
+    "agents": {
+      "items": {
+        "$ref": "#/$defs/AgentInfo"
+      },
+      "title": "Agents",
+      "type": "array"
+    },
+    "mcp_servers": {
+      "items": {
+        "$ref": "#/$defs/McpServerInfo"
+      },
+      "title": "Mcp Servers",
+      "type": "array"
+    },
+    "spans": {
+      "items": {
+        "$ref": "#/$defs/SpanInput"
+      },
+      "title": "Spans",
+      "type": "array"
+    },
+    "edges": {
+      "items": {
+        "$ref": "#/$defs/EdgeInput"
+      },
+      "title": "Edges",
+      "type": "array"
+    }
+  },
+  "required": [
+    "source",
+    "session"
+  ],
+  "title": "CanonicalEnvelope",
+  "type": "object"
+}
