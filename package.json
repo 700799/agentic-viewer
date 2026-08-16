@@ -5,9 +5,9 @@
   "description": "A visual, Airflow-style canvas for observing Claude Code and AI-agent workflows",
   "license": "Apache-2.0",
   "scripts": {
-    "dev": "pnpm --filter frontend dev",
-    "build": "pnpm --filter frontend build",
-    "lint": "pnpm --filter frontend lint"
+    "dev": "pnpm --filter @agentcanvas/frontend dev",
+    "build": "pnpm --filter @agentcanvas/frontend build",
+    "lint": "pnpm --filter @agentcanvas/frontend lint"
   },
   "packageManager": "pnpm@10.33.0",
   "pnpm": {

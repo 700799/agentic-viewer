@@ -1,0 +1,7 @@
+# Dependencies for the Vercel serverless function (api/index.py).
+# The full backend project (incl. dev tooling) is managed by uv in backend/pyproject.toml.
+fastapi>=0.115
+sqlalchemy>=2.0
+pydantic>=2.7
+pydantic-settings>=2.3
+python-dateutil>=2.9
