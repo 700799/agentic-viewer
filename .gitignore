@@ -25,3 +25,6 @@ dist/
 .vscode/
 
 # Build artifacts (generated TS types ARE committed so the app runs without a build step)
+
+# Vercel
+.vercel

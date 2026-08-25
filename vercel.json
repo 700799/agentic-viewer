@@ -3,6 +3,12 @@
   "buildCommand": "pnpm install --frozen-lockfile && pnpm --filter @agentcanvas/frontend build",
   "outputDirectory": "frontend/dist",
   "installCommand": "echo 'install handled in buildCommand'",
+  "functions": {
+    "api/index.py": {
+      "runtime": "python3.12",
+      "maxDuration": 30
+    }
+  },
   "rewrites": [
     { "source": "/api/:path*", "destination": "/api/index" },
     { "source": "/healthz", "destination": "/api/index" },
