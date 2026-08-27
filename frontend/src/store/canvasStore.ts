@@ -35,7 +35,8 @@ export const useCanvasStore = create<CanvasState>((set) => ({
   toggleGroup: (groupId) =>
     set((s) => {
       const next = new Set(s.collapsedGroups);
-      next.has(groupId) ? next.delete(groupId) : next.add(groupId);
+      if (next.has(groupId)) next.delete(groupId);
+      else next.add(groupId);
       return { collapsedGroups: next };
     }),
   setSearchQuery: (q) => set({ searchQuery: q }),

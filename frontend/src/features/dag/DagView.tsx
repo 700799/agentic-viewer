@@ -8,11 +8,15 @@ import ReactFlow, {
   type NodeMouseHandler,
 } from "reactflow";
 import { useGraph, useTimeline } from "@/api/hooks";
+import type { GraphNode } from "@/types/api";
 import { layoutGraph } from "./layout";
 import { CanvasNode } from "./nodes/CanvasNode";
 import { useCanvasStore } from "@/store/canvasStore";
 import { SpanDetailDrawer } from "@/components/SpanDetailDrawer";
 import { SearchBar } from "@/components/SearchBar";
+
+// React Flow stores our GraphNode under `data.node` (see layout.ts).
+type CanvasNodeData = { node?: GraphNode };
 
 const nodeTypes = { canvasNode: CanvasNode };
 
@@ -72,7 +76,7 @@ export function DagView({ sessionId }: { sessionId: string }) {
           <MiniMap
             pannable
             zoomable
-            nodeColor={(n) => MINIMAP_COLORS[(n.data as any)?.node?.type] ?? "#8b949e"}
+            nodeColor={(n) => MINIMAP_COLORS[(n.data as CanvasNodeData).node?.type ?? ""] ?? "#8b949e"}
             maskColor="rgba(13,17,23,0.7)"
             style={{ background: "#161b22" }}
           />

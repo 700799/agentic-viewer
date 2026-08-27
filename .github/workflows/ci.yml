@@ -8,6 +8,10 @@ on:
 jobs:
   backend:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
     defaults:
       run:
         working-directory: backend
@@ -17,10 +21,10 @@ jobs:
         uses: astral-sh/setup-uv@v5
         with:
           enable-cache: true
-      - name: Set up Python
-        run: uv python install 3.11
+      - name: Set up Python ${{ matrix.python-version }}
+        run: uv python install ${{ matrix.python-version }}
       - name: Install dependencies
-        run: uv sync --extra dev
+        run: uv sync --extra dev -p ${{ matrix.python-version }}
       - name: Lint (ruff)
         run: uv run ruff check app tests
       - name: Apply migrations (SQLite)
@@ -34,6 +38,32 @@ jobs:
                <(python -c "import json,sys; json.dump(json.load(open('../frontend/src/types/canonical.schema.json')), sys.stdout, indent=2, sort_keys=True)") \
             || (echo "::error::canonical.schema.json is stale — run 'make gen-types'" && exit 1)
 
+  # Guards the Vercel serverless entrypoint: root requirements.txt must be
+  # sufficient to import api/index.py and self-seed the demo database.
+  serverless:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install function dependencies
+        run: pip install -r requirements.txt
+      - name: Import entrypoint and verify self-seed
+        run: |
+          python -c "
+          from api.index import app
+          from app.db.base import SessionLocal
+          from app.db.models import Session
+          db = SessionLocal()
+          count = db.query(Session).count()
+          db.close()
+          assert count == 1, f'expected 1 seeded session, got {count}'
+          paths = {getattr(r, 'path', None) for r in app.routes}
+          assert '/healthz' in paths, f'healthz route missing: {paths}'
+          print(f'serverless entrypoint OK: {count} seeded session')
+          "
+
   frontend:
     runs-on: ubuntu-latest
     steps:
@@ -46,5 +76,7 @@ jobs:
           cache-dependency-path: pnpm-lock.yaml
       - name: Install dependencies (workspace)
         run: pnpm install --frozen-lockfile
+      - name: Lint (eslint)
+        run: pnpm --filter @agentcanvas/frontend lint
       - name: Type-check and build
         run: pnpm --filter @agentcanvas/frontend build

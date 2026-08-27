@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSessions } from "@/api/hooks";
 import { SessionSidebar } from "@/features/sessions/SessionSidebar";
 import { DagView } from "@/features/dag/DagView";
@@ -20,19 +20,16 @@ const TABS: { id: View; label: string }[] = [
 
 export function AppShell() {
   const { data } = useSessions();
-  const [selectedSession, setSelectedSession] = useState<string | undefined>();
+  const [pickedSession, setPickedSession] = useState<string | undefined>();
   const [view, setView] = useState<View>("dag");
   const reset = useCanvasStore((s) => s.reset);
 
-  // Default to the first session once loaded.
-  useEffect(() => {
-    if (!selectedSession && data?.items.length) {
-      setSelectedSession(data.items[0].id);
-    }
-  }, [data, selectedSession]);
+  // Fall back to the first session until one is explicitly picked. Derived rather
+  // than synced via an effect, so there is no cascading render on load.
+  const selectedSession = pickedSession ?? data?.items[0]?.id;
 
   function pickSession(id: string) {
-    setSelectedSession(id);
+    setPickedSession(id);
     reset();
   }
 
