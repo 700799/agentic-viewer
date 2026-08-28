@@ -1,6 +1,6 @@
 # License Recommendation
 
-Deliverable **#10**. **Recommended and adopted: Apache License 2.0** (see [`LICENSE`](../LICENSE)).
+Deliverable **#10**. **Recommended and adopted: Apache License 2.0** (see [`LICENSE`](https://github.com/700799/agentic-viewer/blob/main/LICENSE)).
 
 ## Rationale
 

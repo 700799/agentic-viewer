@@ -2,6 +2,12 @@
 
 > A visual, Airflow-style canvas for observing Claude Code and AI-agent workflows.
 
+[![CI](https://github.com/700799/agentic-viewer/actions/workflows/ci.yml/badge.svg)](https://github.com/700799/agentic-viewer/actions/workflows/ci.yml)
+[![Docs](https://github.com/700799/agentic-viewer/actions/workflows/docs.yml/badge.svg)](https://700799.github.io/agentic-viewer/)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+
+**[Documentation](https://700799.github.io/agentic-viewer/)**
+
 Agent Canvas ingests execution traces from agent frameworks, normalizes them into a
 single canonical span model, and renders them as an interactive DAG, a step-by-step
 timeline, a cost breakdown, and auto-generated architecture diagrams.
@@ -52,12 +58,14 @@ make frontend-install
 make frontend         # http://localhost:5173
 ```
 
-Or ingest your own Claude Code session:
+Or install the CLI and ingest one of your own Claude Code sessions:
 
 ```bash
-cd backend
-uv run agentcanvas ingest ~/.claude/projects/<project>/<session>.jsonl
+pip install agentcanvas
+agentcanvas ingest ~/.claude/projects/<project>/<session>.jsonl
 ```
+
+Framework adapters ship as extras — `pip install agentcanvas[langgraph]`.
 
 ## Integrations
 
@@ -84,6 +92,12 @@ docs/        architecture, schema, API, roadmaps, screenshots, examples
 - [Screenshots (described)](docs/screenshots.md)
 - [Example trace](docs/examples/example-trace.json) · [Example DAG](docs/examples/example-dag.md)
 - [License rationale](docs/license.md)
+
+## Contributing
+
+Most contributions are **adapters** — a pure function turning some framework's native
+trace into the [canonical envelope](docs/canonical-schema.md). See
+[CONTRIBUTING.md](CONTRIBUTING.md) for setup, tests, and the adapter walkthrough.
 
 ## License
 

@@ -1,6 +1,6 @@
 # Adapter: Claude Code (first-class)
 
-Implemented in [`backend/app/adapters/claude_code.py`](../../backend/app/adapters/claude_code.py)
+Implemented in [`backend/app/adapters/claude_code.py`](https://github.com/700799/agentic-viewer/blob/main/backend/app/adapters/claude_code.py)
 and exercised by the CLI: `agentcanvas ingest <session>.jsonl`.
 
 ## Source
