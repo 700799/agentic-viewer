@@ -1,0 +1,17 @@
+#!/bin/sh
+# Auto-format and lint-fix staged Python before each commit.
+# Enable with: git config core.hooksPath .githooks
+set -e
+
+staged=$(git diff --cached --name-only --diff-filter=ACM -- '*.py')
+[ -z "$staged" ] && exit 0
+
+if ! command -v uv >/dev/null 2>&1; then
+  echo "pre-commit: uv not found, skipping ruff" >&2
+  exit 0
+fi
+
+# Paths are repo-relative; ruff is configured in backend/pyproject.toml.
+echo "$staged" | xargs uv run --project backend ruff format --quiet
+echo "$staged" | xargs uv run --project backend ruff check --fix --quiet || true
+echo "$staged" | xargs git add

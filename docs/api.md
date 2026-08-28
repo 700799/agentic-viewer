@@ -2,7 +2,7 @@
 
 Deliverable **#4**. Base path `/api/v1`. JSON in/out. Interactive OpenAPI docs are served
 at `/docs` when the backend is running. DTOs are defined in
-[`backend/app/schemas/api.py`](../backend/app/schemas/api.py).
+[`backend/app/schemas/api.py`](https://github.com/700799/agentic-viewer/blob/main/backend/app/schemas/api.py).
 
 | Method | Path | Purpose | Status |
 |---|---|---|---|
