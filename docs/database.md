@@ -1,7 +1,7 @@
 # Database Schema
 
 Deliverable **#3**. Implemented in
-[`backend/app/db/models/entities.py`](../backend/app/db/models/entities.py); the baseline
+[`backend/app/db/models/entities.py`](https://github.com/700799/agentic-viewer/blob/main/backend/app/db/models/entities.py); the baseline
 Alembic migration lives in `backend/alembic/versions/`.
 
 The spine is the **`span`** table. Dimension tables (`agent`, `mcp_server`) and side

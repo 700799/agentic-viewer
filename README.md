@@ -2,6 +2,12 @@
 
 > A visual, Airflow-style canvas for observing Claude Code and AI-agent workflows.
 
+[![CI](https://github.com/700799/agentic-viewer/actions/workflows/ci.yml/badge.svg)](https://github.com/700799/agentic-viewer/actions/workflows/ci.yml)
+[![Docs](https://github.com/700799/agentic-viewer/actions/workflows/docs.yml/badge.svg)](https://700799.github.io/agentic-viewer/)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+
+**[Documentation](https://700799.github.io/agentic-viewer/)**
+
 Agent Canvas ingests execution traces from agent frameworks, normalizes them into a
 single canonical span model, and renders them as an interactive DAG, a step-by-step
 timeline, a cost breakdown, and auto-generated architecture diagrams.
@@ -22,6 +28,16 @@ graph you can zoom, replay, and cost out.**
 | **Cost** | Token usage, cost per step, cost per agent, total session cost. |
 | **Architecture** | Auto-generated Mermaid flowchart / sequence / dependency / system diagrams. |
 | **Compare** | Diff two runs by structure, cost, and latency. |
+
+## Status
+
+Alpha. What exists today versus what's ahead:
+
+| | |
+|---|---|
+| ✅ Working | DAG / Timeline / Cost / Architecture / Compare views; Claude Code adapter + `agentcanvas` CLI; canonical span model with raw-trace re-projection; CI (tests, lint, schema-sync, serverless import check) |
+| 🚧 In progress | Hosted demo on Vercel; PyPI release |
+| 🗺 Planned | OpenAI Agents / LangGraph / CrewAI / AutoGen adapters; ELK hierarchical layout with group collapse; live streaming ingest; PostgreSQL — see the [roadmap](docs/roadmap.md) |
 
 ## Architecture at a glance
 
@@ -52,12 +68,16 @@ make frontend-install
 make frontend         # http://localhost:5173
 ```
 
-Or ingest your own Claude Code session:
+Or install the CLI from source and ingest one of your own Claude Code sessions:
 
 ```bash
-cd backend
-uv run agentcanvas ingest ~/.claude/projects/<project>/<session>.jsonl
+pipx install "git+https://github.com/700799/agentic-viewer.git#subdirectory=backend"
+agentcanvas init-db
+agentcanvas ingest ~/.claude/projects/<project>/<session>.jsonl
 ```
+
+A PyPI release (`pip install agentcanvas`) is planned; the packaging — including
+per-framework adapter extras like `agentcanvas[langgraph]` — is already in place.
 
 ## Integrations
 
@@ -84,6 +104,12 @@ docs/        architecture, schema, API, roadmaps, screenshots, examples
 - [Screenshots (described)](docs/screenshots.md)
 - [Example trace](docs/examples/example-trace.json) · [Example DAG](docs/examples/example-dag.md)
 - [License rationale](docs/license.md)
+
+## Contributing
+
+Most contributions are **adapters** — a pure function turning some framework's native
+trace into the [canonical envelope](docs/canonical-schema.md). See
+[CONTRIBUTING.md](CONTRIBUTING.md) for setup, tests, and the adapter walkthrough.
 
 ## License
 

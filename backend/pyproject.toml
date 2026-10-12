@@ -1,10 +1,31 @@
 [project]
 name = "agentcanvas"
 version = "0.1.0"
-description = "Agent Canvas backend — trace ingestion, storage, and query API"
+description = "A visual, Airflow-style canvas for observing Claude Code and AI-agent workflows"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "Apache-2.0" }
+authors = [{ name = "Agent Canvas contributors" }]
+keywords = [
+    "observability",
+    "tracing",
+    "llm",
+    "agents",
+    "claude-code",
+    "mcp",
+    "opentelemetry",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Debuggers",
+    "Topic :: System :: Monitoring",
+    "Typing :: Typed",
+]
 dependencies = [
     "fastapi>=0.115",
     "uvicorn[standard]>=0.30",
@@ -16,10 +37,24 @@ dependencies = [
     "python-dateutil>=2.9",
 ]
 
+[project.urls]
+Homepage = "https://github.com/700799/agentic-viewer"
+Documentation = "https://700799.github.io/agentic-viewer/"
+Repository = "https://github.com/700799/agentic-viewer"
+Issues = "https://github.com/700799/agentic-viewer/issues"
+Changelog = "https://github.com/700799/agentic-viewer/blob/main/CHANGELOG.md"
+
 [project.scripts]
 agentcanvas = "app.cli:app"
 
 [project.optional-dependencies]
+# Framework adapters. Claude Code needs no extra — it parses JSONL transcripts
+# with only the base dependencies. See docs/adapters/ for the mappings.
+langgraph = ["langchain-core>=0.3"]
+crewai = ["crewai>=0.80"]
+autogen = ["autogen-agentchat>=0.4"]
+openai = ["openai-agents>=0.1"]
+
 dev = [
     "pytest>=8.0",
     "httpx>=0.27",
@@ -36,6 +71,13 @@ packages = ["app"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"
+# Registered up front so adapter fixture suites can be tagged as they land.
+# Everything is fast today; CI runs the whole suite.
+markers = [
+    "fast: quick unit tests (the default gate)",
+    "slow: takes more than a couple of seconds",
+    "optional: requires an optional adapter extra to be installed",
+]
 
 [tool.ruff]
 line-length = 100

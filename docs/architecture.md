@@ -47,7 +47,7 @@ POST /api/v1/traces:ingest   (or the `agentcanvas ingest` CLI)
 
 - **Adapters** (`app/adapters/`) — one per framework. Pure, unit-tested against recorded
   fixtures. The Claude Code adapter (`claude_code.py`) is first-class; the others are
-  documented in [`docs/adapters/`](adapters/).
+  documented in [`docs/adapters/`](adapters/claude-code.md).
 - **Projector** (`app/ingest/projector.py`) — the only writer of projected tables.
   Idempotent: re-ingesting an envelope replaces the session's projection rather than
   duplicating it. Resolves `external_*` ids to internal UUIDs, computes `sequence`
