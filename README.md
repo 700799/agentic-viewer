@@ -29,6 +29,16 @@ graph you can zoom, replay, and cost out.**
 | **Architecture** | Auto-generated Mermaid flowchart / sequence / dependency / system diagrams. |
 | **Compare** | Diff two runs by structure, cost, and latency. |
 
+## Status
+
+Alpha. What exists today versus what's ahead:
+
+| | |
+|---|---|
+| ✅ Working | DAG / Timeline / Cost / Architecture / Compare views; Claude Code adapter + `agentcanvas` CLI; canonical span model with raw-trace re-projection; CI (tests, lint, schema-sync, serverless import check) |
+| 🚧 In progress | Hosted demo on Vercel; PyPI release |
+| 🗺 Planned | OpenAI Agents / LangGraph / CrewAI / AutoGen adapters; ELK hierarchical layout with group collapse; live streaming ingest; PostgreSQL — see the [roadmap](docs/roadmap.md) |
+
 ## Architecture at a glance
 
 ```
@@ -58,14 +68,16 @@ make frontend-install
 make frontend         # http://localhost:5173
 ```
 
-Or install the CLI and ingest one of your own Claude Code sessions:
+Or install the CLI from source and ingest one of your own Claude Code sessions:
 
 ```bash
-pip install agentcanvas
+pipx install "git+https://github.com/700799/agentic-viewer.git#subdirectory=backend"
+agentcanvas init-db
 agentcanvas ingest ~/.claude/projects/<project>/<session>.jsonl
 ```
 
-Framework adapters ship as extras — `pip install agentcanvas[langgraph]`.
+A PyPI release (`pip install agentcanvas`) is planned; the packaging — including
+per-framework adapter extras like `agentcanvas[langgraph]` — is already in place.
 
 ## Integrations
 
