@@ -36,7 +36,7 @@ run across all five views.
 ### Phase 3 — More adapters
 Priority by mapping ease: **OpenAI Agents SDK** (near 1:1 with the canonical spans) →
 **LangGraph** (callback handler) → **CrewAI** (event bus) → **AutoGen** (message log).
-Each ships with fixture-based contract tests. See [`adapters/`](adapters/).
+Each ships with fixture-based contract tests. See [`adapters/`](adapters/claude-code.md).
 
 ### Phase 4 — Live & scale
 - Streaming `POST /sessions/{id}/spans:append` + SSE/WebSocket push for live runs.
