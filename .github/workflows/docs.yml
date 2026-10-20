@@ -6,11 +6,14 @@ on:
     paths:
       - "docs/**"
       - "mkdocs.yml"
+      - "frontend/**"
+      - "backend/**"
       - ".github/workflows/docs.yml"
   pull_request:
     paths:
       - "docs/**"
       - "mkdocs.yml"
+      - ".github/workflows/docs.yml"
   workflow_dispatch:
 
 permissions:
@@ -21,17 +24,58 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # One Pages artifact carries both the MkDocs site (at /) and the static demo
+  # (at /demo/): the real frontend built in VITE_STATIC_API mode, reading API
+  # responses pre-baked by backend/app/export/static_api.py.
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
           cache: pip
-      - run: pip install mkdocs-material
-      # --strict fails the build on broken cross-links between docs.
-      - run: mkdocs build --strict
+      - name: Build docs (strict)
+        run: |
+          pip install mkdocs-material
+          mkdocs build --strict -d site
+
+      - uses: pnpm/action-setup@v4 # version comes from package.json "packageManager"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+      - name: Build demo frontend (static mode)
+        env:
+          VITE_STATIC_API: "1"
+          VITE_BASE: /agentic-viewer/demo/
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm --filter @agentcanvas/frontend build
+          mkdir -p site/demo
+          cp -r frontend/dist/. site/demo/
+
+      - name: Bake static API snapshot into the demo
+        run: |
+          pip install -r requirements.txt httpx2
+          cd backend && python -m app.export.static_api ../site/demo
+
+      - name: Demo smoke test
+        run: |
+          python - <<'EOF'
+          import json, pathlib
+          site = pathlib.Path("site/demo")
+          assert (site / "index.html").is_file(), "demo index missing"
+          sessions = json.loads((site / "api/v1/sessions.json").read_text())
+          assert sessions["items"], "no seeded session in static API"
+          sid = sessions["items"][0]["id"]
+          graph = json.loads((site / f"api/v1/sessions/{sid}/graph.json").read_text())
+          assert len(graph["nodes"]) >= 10, "graph snapshot looks wrong"
+          print(f"demo ok: session {sid}, {len(graph['nodes'])} graph nodes")
+          EOF
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site

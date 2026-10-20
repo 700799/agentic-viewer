@@ -6,7 +6,7 @@
 [![Docs](https://github.com/700799/agentic-viewer/actions/workflows/docs.yml/badge.svg)](https://700799.github.io/agentic-viewer/)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 
-**[Documentation](https://700799.github.io/agentic-viewer/)**
+**[Documentation](https://700799.github.io/agentic-viewer/)** · **[Live demo](https://700799.github.io/agentic-viewer/demo/)**
 
 Agent Canvas ingests execution traces from agent frameworks, normalizes them into a
 single canonical span model, and renders them as an interactive DAG, a step-by-step
@@ -35,8 +35,8 @@ Alpha. What exists today versus what's ahead:
 
 | | |
 |---|---|
-| ✅ Working | DAG / Timeline / Cost / Architecture / Compare views; Claude Code adapter + `agentcanvas` CLI; canonical span model with raw-trace re-projection; CI (tests, lint, schema-sync, serverless import check) |
-| 🚧 In progress | Hosted demo on Vercel; PyPI release |
+| ✅ Working | DAG / Timeline / Cost / Architecture / Compare views; Claude Code adapter + `agentcanvas` CLI; canonical span model with raw-trace re-projection; [static demo on GitHub Pages](https://700799.github.io/agentic-viewer/demo/); CI (tests, lint, schema-sync, serverless import check) |
+| 🚧 In progress | PyPI release |
 | 🗺 Planned | OpenAI Agents / LangGraph / CrewAI / AutoGen adapters; ELK hierarchical layout with group collapse; live streaming ingest; PostgreSQL — see the [roadmap](docs/roadmap.md) |
 
 ## Architecture at a glance
@@ -78,6 +78,15 @@ agentcanvas ingest ~/.claude/projects/<project>/<session>.jsonl
 
 A PyPI release (`pip install agentcanvas`) is planned; the packaging — including
 per-framework adapter extras like `agentcanvas[langgraph]` — is already in place.
+
+## Hosted demo
+
+The [live demo](https://700799.github.io/agentic-viewer/demo/) is the real frontend
+served from GitHub Pages against a **pre-baked snapshot** of the API (the bundled sample
+trace, exported by `backend/app/export/static_api.py` at docs-deploy time). It is
+read-only — ingesting your own traces needs a running backend (quick start above). The
+repo also carries Vercel config (`vercel.json`, `api/index.py`) for hosting the full
+API serverlessly.
 
 ## Integrations
 
